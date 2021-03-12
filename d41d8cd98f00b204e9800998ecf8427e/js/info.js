@@ -1,215 +1,163 @@
+// JavaScript Document
+var request = false;
+try {request = new XMLHttpRequest();}
+catch (trymicrosoft) {
+try{request = new ActiveXObject('Msxml2.XMLHTTP');}
+catch (othermicrosoft) {
+try{request = new ActiveXObject('Microsoft.XMLHTTP');}
+catch (failed){request = false;}}}
 
-/***** �������ʽ2016-8-2 *****/
-#fixed{position:fixed;bottom:0;right:0;z-index:9999;}
-*{margin:0;padding:0;font-style:normal;word-break:break-all;word-wrap:break-word;}
-ul,li{list-style: none;}
+function GO(o){
+if(event.keyCode==13){ event.keyCode=9;o.focus();}}
 
-.side-barBox{
-	position:fixed;
-	right:0;
-	bottom:0;
-	height:100%!important;
-	top:0;
-	width: 70px;
-	/* background:#fff; */
-	z-index:100;
-	filter: progid:DXImageTransform.Microsoft.Shadow(color='#efeeee', Direction=220, Strength=2);
+function QueryDesOK()
+{
+if (request.readyState == 4)
+{
+if (request.status == 200)
+{
+if(request.responseText.charAt(0) == "-") return ;
+var response = request.responseText.split("|");
+theForm.cdes.value=response[2].replace(/&#124;/g,"|");
+return ;
 }
-.side-barBox .side-bar{
-	position:absolute;
-	right:0;
-	top:0;
-	bottom:0;
-	width: 70px;
-	/* background:#fff; */
-	/* -webkit-box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1); */
-	-moz-box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1);
-	/* box-shadow: -1px 0 2px 0 rgba(0, 0, 0, 0.1); */
 }
-.side-bar > ul{
-	position:absolute;
-	left:0;
-	right:0;
-	text-align:center;
 }
-.side-bar > ul > li{
-	position:relative;
-	width:100%;
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	-o-transition: all 0.2s ease;
-	transition: all 0.2s ease;
-	/* border-bottom:1px solid #e9e9e9; */
-	/* cursor:pointer;*/
-	border-radius: 0px;
-	margin: 0 0 5px 0;
-}
-.side-bar > ul > li > a{cursor:default;}
-.side-bar > ul > li .introduce{display:none;}
-.side-bar > ul > li:hover{background:#0082df;}
-.side-bar > ul > li:hover .introduce{display:block;}
-.bar-menu-top > li > a > span{
-	color: #FFFFFF;
-	display:block;
-	width: 50px;
-	margin: 0 auto;
-}
-.side-bar > ul > li:hover > a span{color:#fff;}
-
-
-.bar-menu-top .vip em {
-    width: 50px;
-    height: 50px;
-	background-color:#00AF04;
-    display: block;
+function stInfo()
+{
+    var niid;//��¼ID,&nid=
+    var curl;//���Ϊ��̬���ӣ����Ӵ�
+    var bstatic;//�Ƿ�Ϊ��̬���ӣ�true:false
+    var cpicture;//�����ͼƬ��&pid=
+    var ddate;//���ڣ�YYYY.mm.dd HH:MM,���д���
+    var ctitle;//����
 }
 
-.bar-menu-top .phone em {
-    width: 50px;
-    height: 50px;
-    background-color:#00AF04;
-	display: block;
+function ellipTitle(str,n)
+{
+var ilen = str.length;
+if(ilen*2 <= n) return str;
+n -= 3;
+var i = 0;
+while(i < ilen && n > 0)
+{
+if(escape(str.charAt(i)).length>4) n--;
+n--;
+i++;
 }
-.side-bar ul li em{
-	display:block;
-}
-.bar-menu-top li em{margin:0 auto 6px;}
-.bar-menu-contact li{padding-top:20px;height:30px;}
-.bar-menu-contact li.last-child{border-bottom:none;}
-.bar-menu-contact li em{margin:0 auto 6px;}
-
-
-.side-bar .bar-menu-top {
-    bottom: 43%;
-    z-index: 8;
-    /* background: #fff; */
-    /* min-height: 352px; */
+if( n > 0) return str;
+return str.substring(0,i)+"...";
 }
 
-.side-bar .bar-menu-top .vip {
-    /* border-top: 1px solid #e9e9e9; */
-    padding: 10px 0;
-    line-height: 17px;
+//--��ʼ����Ϣ�ռ估״̬--
+var nTotalFrame =4;//�ж�����frame��������Ҫ�Ķ�������
+var anInfoGet = new Array(nTotalFrame);//���Ž���״̬
+var anTopicGet = new Array(nTotalFrame);//�ȵ����״̬
+
+for(i=0;i<nTotalFrame;i++)
+{
+anInfoGet[i] = -1;
+anTopicGet[i] = -1;
 }
 
-.bar-menu-top .vip .introduce {
-    /* width: 448px; */
-    background: #fff;
-    top: 0px;
+function FuncInfo(ic,n)
+{
+if(n > 0) anInfoGet[ic] = n;
+else anInfoGet[ic] = 0;
+if(anTopicGet[ic] >= 0) display(n,ic);
 }
 
-.bar-menu-top li .introduce {
-    position: absolute;
-    background: #fff;
-    z-index: 7;
-    -moz-box-shadow: -1px 0px 4px 2px #d9d9d9;
-    -ms-box-shadow: -1px 0px 4px 2px #d9d9d9;
-    -webkit-box-shadow: -1px 0px 4px 2px #d9d9d9;
-    box-shadow: -1px 0px 4px 2px #d9d9d9;
-    filter: progid:DXImageTransform.Microsoft.Shadow(color='#d9d9d9', Direction=220, Strength=5);
-    right: 70px;
-    top: -73px;
+function FuncTopic(ic,n)
+{
+if(n > 0) anTopicGet[ic] = n;
+else anTopicGet[ic] = 0;
+if(anInfoGet[ic] >= 0) display(n,ic);
+
 }
 
-.vip .introduce i {
-    display: block;
-    margin: 20px auto 15px;
-    width: 62px;
-    height: 180px;
-    background:none;
-}
+function display(n,ic)
+{
 
-.qq .introduce i {
-    display: block;
-    margin: 20px auto 15px;
-    width: 62px;
-    height: 180px;
-    background:none;
-}
+var str="";
+var o;
+var aID = new Array();
+var bDup;
+var MaxNum = 4;//��Ҫ�޸ģ������ʾ����
+var TotalNum = 0;
 
-.qq .introduce p {
-    border-bottom: 1px solid #e2e2e2;
-    color: #616161;
-    font-size: 14px;
-}
+for(j=0;j<2;j++)
+{
+if(j == 0 && anTopicGet[ic] <= 0) continue;
+if(j == 1 && anInfoGet[ic] <= 0) continue;
 
-.bar-menu-top .introduce i {
-    display: block;
+if(j == 0) //�������6�飬��Ҫ�Ķ�������
+{
+if(ic == 0) o=otopic0;
+else if(ic == 1) o=otopic1;
+else if(ic == 2) o=otopic2;
+else if(ic == 3) o=otopic3;
+else if(ic == 4) o=otopic4;
+else o=otopic5;
 }
-.bar-menu-top .introduce span {
-    display: block;
-    font-weight: bold;
-    font-size: 15px;
-    color: #2b2b2b;
-    padding-bottom: 8px;
-}
-
-
-.side-bar > ul > li:hover {
-    background: #0082df;
-}
-
-.bar-menu-top .auction {
-    height: 65px;
-    padding-top: 25px;
-}
-
-.bar-menu-top .phone {
-    padding: 10px 0;
-	background-color:#00AF04;
+else
+{
+if(ic == 0) o=oinfo0;
+else if(ic == 1) o=oinfo1;
+else if(ic == 2) o=oinfo2;
+else if(ic == 3) o=oinfo3;
+else if(ic == 4) o=oinfo4;
+else o=oinfo5;
 }
 
 
 
+for(i=0;i<o.length;i++)
+{
+bDup = false;
+for(x=0;x<aID.length;x++)
+{
+if(aID[x] == o[i].niid)
+{
+bDup = true;
+break;
+}
+}
+if(bDup) continue;
+aID[aID.length] = o[i].niid;
 
+if((++TotalNum) > MaxNum) break;
 
-.phone .introduce p {
-    border-bottom: 1px solid #e2e2e2;
-    color: #616161;
-    font-size: 14px;
+	str	 +=	"<div id='newsBox'>";
+	if(ic==1)	str +=	 "<div id='newsList2'>";
+	else str +=	 "<div id='newsList'>";
+	str += "<a href='";
+	if(o[i].bstatic) str += o[i].curl;
+	else
+	{
+	str += "";
+	str += o[i].niid;
+	}
+	str += "' target='_blank' class='";
+	if(j == 0) str += "fred'>";
+	else if (ic==1) str += "newsList'>";
+	else  str += "newsList2'>";
+	str +=	 ellipTitle(o[i].ctitle,90);
+	str +=	 "</a></div>";
+	str +=	 "<div id='newsData'>[";
+	str += o[i].ddate.substring(0,10);
+	str += "]</div>";
+	str += "</div>";
+
+}
 }
 
-.bar-menu-top .phone .introduce {
-    width: 140px;
-    top: 0px;
+o = document.getElementById("news"+ic);
+if(o == null) return ;
+o.innerHTML=str;
 
-    right: 70px;
 }
-
-
-
-
-
-/*�ͷ���Ϣ*/
-.phone .introduce .service-title{
-	height:40px;
-	line-height:40px;
-	background-color:#f7f7f7;
-	text-align:center;
-}
-.phone .introduce .service-info{padding:0 5px;}
-.introduce .service-info p{padding-top:6px; padding-bottom:6px;font-family:Arial, Helvetica, sans-serif; font-size:15px; color:#FF0000;}
-.phone .introduce .qq-17{
-    display: inline-block;
-    height: 120px;
-    width: 96px;
-	padding-top:2px;
-	padding-bottom:0px;
-}
-.introduce .qq-17 p{padding-top:1px; padding-bottom:1px;}
-/*�ͷ���Ϣ*/
-/*��ϵ��ʽ��*/
-.bar-menu-contact li .introduce{
-	position:absolute;
-	background:#fff;
-	z-index:6;
-	filter: progid:DXImageTransform.Microsoft.Shadow(color='#c0bebf', Direction=220, Strength=5);
-}
-.side-bar .bar-menu-contact{bottom:0;z-index:7;background:#fff;}
-
-
-
-
-
-
-
+var widths=1000;
+var heights=240;
+var counts=3;
+var a_img=new Array(3);
+var a_url=new Array(3);
